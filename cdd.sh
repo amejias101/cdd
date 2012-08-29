@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # This script is intended to be used as:
 # alias cdd=". /<full path>/cder.sh"
 
@@ -139,13 +139,13 @@ while [ 1 ]; do
 	read -r -s -n 1 C
 	
 	case $C in
-	"h") # Left
+	"a") # Left
 		# we are traversing "backwards", so instruct search directory to occur
 		search_dir=1
 		cd ..
 		level=0
 		;;
-	"j") # Down
+	"s") # Down
 		level=$((level+1))
 		clear_dir=0
 		redraw=0
@@ -155,7 +155,7 @@ while [ 1 ]; do
 			move_cursor 1
 		fi
 		;;
-	"k") # Up
+	"w") # Up
 		level=$((level-1))
 		clear_dir=0
 		redraw=0
@@ -165,7 +165,7 @@ while [ 1 ]; do
 			move_cursor 0
 		fi
 		;;
-	"l") # Right
+	"d") # Right
 		enter_dir="$current_dir/${dirs[$level]}"
 		if [ "$current_dir" == "/" ]; then
 			enter_dir="/${dirs[$level]}"
@@ -184,6 +184,17 @@ while [ 1 ]; do
 		level=0
 		
 		;;
+	"e") # open current dir with gnome-open
+		gnome-open .
+		export OLDPWD=$initial_dir
+		break
+		;;
+	"f") # open selected dir with gnome-open
+	   	gnome-open "$enter_dir"
+	    cd "$initial_dir"
+	    export OLDPWD=$old_dir
+	    break
+	    ;;
 	"q" | $'\e')
 		cd "$initial_dir"
 		export OLDPWD=$old_dir
